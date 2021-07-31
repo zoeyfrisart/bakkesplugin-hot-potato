@@ -33,6 +33,7 @@ class HotPotato: public BakkesMod::Plugin::BakkesModPlugin, public BakkesMod::Pl
 	int getBounceCount();
 	int getBallStreak();
 	int getBallStreakRecord();
+	void resetHighscore();
 
 	// Settings
 	void RenderSettings() override;

@@ -29,10 +29,13 @@ void HotPotato::Render()
 		return;
 	}
 
+	CVarWrapper maxBounceCvar = cvarManager->getCvar("max_bounce");
+	if (!maxBounceCvar) { return; }
+	int maxBounce = maxBounceCvar.getIntValue();
 
 	std::string bounceCount = "0";
-	if (HotPotato::getBounceCount() > 2) {
-		bounceCount = "2+";
+	if (HotPotato::getBounceCount() > maxBounce) {
+		bounceCount =std::to_string(maxBounce) + "+";
 	}
 	else {
 		bounceCount = std::to_string(HotPotato::getBounceCount());
@@ -108,4 +111,17 @@ void HotPotato::RenderSettings() {
 	}
 
 	ImGui::TextUnformatted("You can create a keybind for this menu by adding a binding for 'togglemenu HotPotato'");
+	ImGui::TextUnformatted("");
+	
+	CVarWrapper maxBounceCvar = cvarManager->getCvar("max_bounce");
+	if (!maxBounceCvar) { return; }
+	int maxBounce = maxBounceCvar.getIntValue();
+	if (ImGui::SliderInt("Max bounce count", &maxBounce, 1, 10)) {
+		maxBounceCvar.setValue(maxBounce);
+	}
+
+	ImGui::TextUnformatted("");
+	if (ImGui::Button("Reset session highscore")) {
+		HotPotato::resetHighscore();
+	}
 }

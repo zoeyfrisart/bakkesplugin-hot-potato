@@ -27,16 +27,18 @@ int bounceCount = 0;
 int streak = 0;
 int streakRecord = 0;
 
-// Settings
-const int max_bounce = 2;
-
 void HotPotato::onLoad()
 {
 	_globalCvarManager = cvarManager;
+	cvarManager->registerCvar("max_bounce", "2", "The max amount the ball is allowed to bounce", true, true, 1, true, 10, true);
 
 	// Player touched the ball
 	gameWrapper->HookEvent("Function TAGame.Ball_TA.OnCarTouch", [this](std::string eventName) {
-		if (bounceCount <= max_bounce) {
+		CVarWrapper maxBounceCvar = cvarManager->getCvar("max_bounce");
+		if (!maxBounceCvar) { return; }
+		int maxBounce = maxBounceCvar.getIntValue();
+
+		if (bounceCount <= maxBounce) {
 			// Player let the ball bounce
 			// So we increase the streak by 1
 			if (bounceCount > 0) {
@@ -76,13 +78,17 @@ void HotPotato::onLoad()
 		// Get the location of the ball
 		Vector ballLocation = ball.GetLocation();
 
+		CVarWrapper maxBounceCvar = cvarManager->getCvar("max_bounce");
+		if (!maxBounceCvar) { return; }
+		int maxBounce = maxBounceCvar.getIntValue();
+
 		// The interaction with the world is either on the floor or low side of the wall
 		if (ballLocation.Z < 200) {
 			// Increase the bounce count by 1
 			bounceCount += 1;
 
 			// Check if the bounce count is higher then the max bounce count
-			if (bounceCount > max_bounce) {
+			if (bounceCount > maxBounce) {
 				if (streak > streakRecord) {
 					streakRecord = streak;
 				}
@@ -107,4 +113,8 @@ int HotPotato::getBounceCount() {
 
 int HotPotato::getBallStreakRecord() {
 	return streakRecord;
+}
+
+void HotPotato::resetHighscore() {
+	streakRecord = 0;
 }
