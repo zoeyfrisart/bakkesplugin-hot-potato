@@ -6,6 +6,8 @@ Bakkesmod plugin to help practice bounce dribbling.
 To get this plugin working download the .dll file from the latest release. Then drag this .dll file into your bakkesmod plugin folder.
 Then open the bakkesmod console in game (default `f6`) and type the command: `plugin load hotpotato`
 
+You can also install this plugin through [bakkesplugins](https://bakkesplugins.com/plugins/view/267)
+
 ## What is Hot Potato
 Hot potato is a practice drill inspired by [SpookLuke](https://youtu.be/1ggYEBQyiRk?t=250), where the goal is to let the ball bounce but not let it bounce more then twice.
 
